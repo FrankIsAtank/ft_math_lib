@@ -58,6 +58,7 @@ set(FT_LIB_ROOT $ENV{FT_ROOT})
 
 # include ft_base_lib
 include_directories(${FT_LIB_ROOT}/ft_base_lib/src)
+include_directories(${FT_LIB_ROOT}/ft_platform_lib/src)
 
 # define default include path
 target_include_directories(FT_MATH_LIB PRIVATE "${DIR_SRC}")
