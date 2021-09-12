@@ -15,39 +15,26 @@ set(DIR_QUATERNION "${DIR_SRC}/quaternion")
 set(DIR_VECTOR "${DIR_SRC}/vector")
 
 # source files
-
 file (GLOB CPP_FULL "")
 file (GLOB HPP_FULL "")
 
-# source : main
-# set(SRC_MAIN "${DIR_SRC}/main.cpp")
-# source_group("source" FILES ${SRC_MAIN})
-# file (GLOB CPP_FULL ${SRC_MAIN})
-# file (GLOB HPP_FULL "")
+# add a subfolder of source files
+# and assign those files to their own filter/group
+# name : group name (both source file directory name, and filter name)
+macro(ft_add_group group_name)
 
-# source : matrix
-file(GLOB_RECURSE SRC_MATRIX_CPP ${DIR_MATRIX}/*.cpp)
-file(GLOB_RECURSE SRC_MATRIX_HPP ${DIR_MATRIX}/*.h ${DIR_MATRIX}/*.hpp)
-source_group("source\\matrix" FILES ${SRC_MATRIX_CPP})
-source_group("header\\matrix" FILES ${SRC_MATRIX_HPP})
-list (APPEND CPP_FULL ${SRC_MATRIX_CPP})
-list (APPEND HPP_FULL ${SRC_MATRIX_HPP})
+	file(GLOB_RECURSE SRC_NEW_CPP "${DIR_SRC}/${group_name}/*.cpp")
+	file(GLOB_RECURSE SRC_NEW_HPP "${DIR_SRC}/${group_name}/*.h" "${DIR_SRC}/${group_name}/*.hpp")
+	source_group("source\\${group_name}" FILES ${SRC_NEW_CPP})
+	source_group("header\\${group_name}" FILES ${SRC_NEW_HPP})
+	list (APPEND CPP_FULL ${SRC_NEW_CPP})
+	list (APPEND HPP_FULL ${SRC_NEW_HPP})
 
-# source : quaternion
-file(GLOB_RECURSE SRC_QUATERNION_CPP ${DIR_QUATERNION}/*.cpp)
-file(GLOB_RECURSE SRC_QUATERNION_HPP ${DIR_QUATERNION}/*.h ${DIR_QUATERNION}/*.hpp)
-source_group("source\\quaternion" FILES ${SRC_QUATERNION_CPP})
-source_group("header\\quaternion" FILES ${SRC_QUATERNION_HPP})
-list (APPEND CPP_FULL ${SRC_QUATERNION_CPP})
-list (APPEND HPP_FULL ${SRC_QUATERNION_HPP})
+endmacro()
 
-# source : vector
-file(GLOB_RECURSE SRC_VECTOR_CPP ${DIR_VECTOR}/*.cpp)
-file(GLOB_RECURSE SRC_VECTOR_HPP ${DIR_VECTOR}/*.h ${DIR_VECTOR}/*.hpp)
-source_group("source\\vector" FILES ${SRC_VECTOR_CPP})
-source_group("header\\vector" FILES ${SRC_VECTOR_HPP})
-list (APPEND CPP_FULL ${SRC_VECTOR_CPP})
-list (APPEND HPP_FULL ${SRC_VECTOR_HPP})
+ft_add_group("matrix")
+ft_add_group("quaternion")
+ft_add_group("vector")
 
 # include the files
 add_library(FT_MATH_LIB ${CPP_FULL} ${HPP_FULL})
