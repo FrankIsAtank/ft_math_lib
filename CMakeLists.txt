@@ -4,15 +4,15 @@ cmake_minimum_required(VERSION 3.18)
 # Project title
 project(FT_MATH_LIB)
 
+# Project name
+set(OUT_NAME "ft_math_lib")
+
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # specify source file directories
 set(DIR_SRC "${FT_MATH_LIB_SOURCE_DIR}/src")
-set(DIR_MATRIX "${DIR_SRC}/matrix")
-set(DIR_QUATERNION "${DIR_SRC}/quaternion")
-set(DIR_VECTOR "${DIR_SRC}/vector")
 
 # source files
 file (GLOB CPP_FULL "")
@@ -38,15 +38,18 @@ ft_add_group("vector")
 
 # include the files
 add_library(FT_MATH_LIB ${CPP_FULL} ${HPP_FULL})
-set_target_properties(FT_MATH_LIB PROPERTIES OUTPUT_NAME ft_math_lib)
+set_target_properties(FT_MATH_LIB PROPERTIES OUTPUT_NAME ${OUT_NAME})
 
-# include other ft libraries
+
 set(FT_LIB_ROOT $ENV{FT_ROOT})
 
-# include ft_base_lib
-include_directories(${FT_LIB_ROOT}/ft_base_lib/src)
-include_directories(${FT_LIB_ROOT}/ft_platform_lib/src)
+# output files to common directory
+set_target_properties(FT_MATH_LIB PROPERTIES
+	ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${FT_LIB_ROOT}/bin/Debug"
+	ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${FT_LIB_ROOT}/bin/Release"
+)
 
-# define default include path
-target_include_directories(FT_MATH_LIB PRIVATE "${DIR_SRC}")
+include_directories(${FT_LIB_ROOT}/ft_base_lib/src)
+include_directories(${FT_LIB_ROOT}/ft_math_lib/src)
+include_directories(${FT_LIB_ROOT}/ft_platform_lib/src)
 
